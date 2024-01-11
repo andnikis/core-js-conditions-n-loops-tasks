@@ -305,8 +305,43 @@ function getBalanceIndex(arr) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const matrix = new Array(size);
+  for (let i = 0; i < size; i += 1) matrix[i] = new Array(size);
+
+  let columnLeft = 0;
+  let rowUp = 0;
+  let rowLow = size - 1;
+  let columnRight = size - 1;
+  let value = 1;
+
+  while (columnLeft <= columnRight && rowUp <= rowLow) {
+    for (let i = columnLeft; i <= columnRight; i += 1) {
+      matrix[rowUp][i] = value;
+      value += 1;
+    }
+    rowUp += 1;
+
+    for (let i = rowUp; i <= rowLow; i += 1) {
+      matrix[i][columnRight] = value;
+      value += 1;
+    }
+    columnRight -= 1;
+
+    for (let i = columnRight; i >= columnLeft; i -= 1) {
+      matrix[rowLow][i] = value;
+      value += 1;
+    }
+    rowLow -= 1;
+
+    for (let i = rowLow; i >= rowUp; i -= 1) {
+      matrix[i][columnLeft] = value;
+      value += 1;
+    }
+    columnLeft += 1;
+  }
+
+  return matrix;
 }
 
 /**
@@ -324,8 +359,26 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const matrixCopy = matrix;
+  const len = matrix.length;
+
+  const rotated = new Array(len);
+  for (let i = 0; i < len; i += 1) rotated[i] = new Array(len);
+
+  for (let i = 0; i < len; i += 1) {
+    for (let j = 0; j < len; j += 1) {
+      rotated[j][len - 1 - i] = matrix[i][j];
+    }
+  }
+
+  for (let i = 0; i < len; i += 1) {
+    for (let j = len - 1; j >= 0; j -= 1) {
+      matrixCopy[i][j] = rotated[i][j];
+    }
+  }
+
+  return matrix;
 }
 
 /**
@@ -384,8 +437,48 @@ function shuffleChar(/* str, iterations */) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const digits = [];
+
+  for (let n = number; n > 0; n = Math.floor(n / 10)) digits.unshift(n % 10);
+
+  let swapIndex = 0;
+  let isSwap = false;
+
+  for (let i = digits.length - 2; i >= 0; i -= 1) {
+    if (digits[i] < digits[i + 1]) {
+      isSwap = true;
+      swapIndex = i;
+      break;
+    }
+  }
+
+  if (!isSwap) {
+    return number;
+  }
+
+  let nextBiggerIndex = swapIndex + 1;
+
+  for (let i = swapIndex + 1; i < digits.length; i += 1) {
+    if (digits[i] > digits[swapIndex] && digits[i] < digits[nextBiggerIndex]) {
+      nextBiggerIndex = i;
+    }
+  }
+
+  [digits[swapIndex], digits[nextBiggerIndex]] = [
+    digits[nextBiggerIndex],
+    digits[swapIndex],
+  ];
+
+  const sortedDigits = digits.splice(swapIndex + 1).sort((a, b) => a - b);
+  digits.push(...sortedDigits);
+
+  let nearestBigger = 0;
+  for (let i = 0, len = digits.length; i < len; i += 1) {
+    nearestBigger += digits[i] * 10 ** (len - 1 - i);
+  }
+
+  return nearestBigger;
 }
 
 module.exports = {
