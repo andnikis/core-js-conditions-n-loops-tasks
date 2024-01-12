@@ -416,8 +416,50 @@ function sortByAsc(/* arr */) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  const cache = [];
+  const len = str.length;
+  const isOddString = len % 2 === 1 ? 1 : 0;
+  const midst = Math.floor(len / 2) + isOddString;
+  const digits = new Array(len);
+  for (let i = 0; i < len; i += 1) digits[i] = str[i];
+
+  function shuffleArray(source, cycle) {
+    if (cache[0]) {
+      let isEqual = true;
+
+      for (let i = 0; i < len; i += 1) {
+        if (cache[0][i] !== source[i]) {
+          isEqual = false;
+          break;
+        }
+      }
+
+      if (isEqual) return cache[cycle % cache.length];
+    }
+
+    cache[cache.length] = source;
+    const nextItem = new Array(len);
+
+    for (let iEven = 0, i = 0; i < midst; iEven += 2, i += 1) {
+      nextItem[i] = source[iEven];
+      nextItem[midst + i] = source[iEven + 1];
+    }
+    if (isOddString) nextItem.length -= 1;
+
+    if (cycle > 1) return shuffleArray(nextItem, cycle - 1);
+
+    return nextItem;
+  }
+
+  const shuffledArr = shuffleArray(digits, iterations);
+  let result = '';
+
+  for (let i = 0; i < shuffledArr.length; i += 1) {
+    result += shuffledArr[i];
+  }
+
+  return result;
 }
 
 /**
