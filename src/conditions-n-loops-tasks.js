@@ -306,8 +306,8 @@ function getBalanceIndex(arr) {
  *        ]
  */
 function getSpiralMatrix(size) {
-  const matrix = new Array(size);
-  for (let i = 0; i < size; i += 1) matrix[i] = new Array(size);
+  const matrix = [];
+  for (let i = 0; i < size; i += 1) matrix[i] = [];
 
   let columnLeft = 0;
   let rowUp = 0;
@@ -363,8 +363,8 @@ function rotateMatrix(matrix) {
   const matrixCopy = matrix;
   const len = matrix.length;
 
-  const rotated = new Array(len);
-  for (let i = 0; i < len; i += 1) rotated[i] = new Array(len);
+  const rotated = [];
+  for (let i = 0; i < len; i += 1) rotated[i] = [];
 
   for (let i = 0; i < len; i += 1) {
     for (let j = 0; j < len; j += 1) {
@@ -421,7 +421,7 @@ function shuffleChar(str, iterations) {
   const len = str.length;
   const isOddString = len % 2 === 1 ? 1 : 0;
   const midst = Math.floor(len / 2) + isOddString;
-  const digits = new Array(len);
+  const digits = [];
   for (let i = 0; i < len; i += 1) digits[i] = str[i];
 
   function shuffleArray(source, cycle) {
@@ -439,7 +439,7 @@ function shuffleChar(str, iterations) {
     }
 
     cache[cache.length] = source;
-    const nextItem = new Array(len);
+    const nextItem = [];
 
     for (let iEven = 0, i = 0; i < midst; iEven += 2, i += 1) {
       nextItem[i] = source[iEven];
